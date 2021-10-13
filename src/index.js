@@ -5,7 +5,7 @@ const _ = require('lodash');
 const { color: d3Color } = require('d3-color');
 const { hsv: d3Hsv } = require('d3-hsv');
 
-class PaletteWebpackPlugin {
+class WordPressPaletteWebpackPlugin {
   /**
    * Register the component.
    *
@@ -315,4 +315,4 @@ class PaletteWebpackPlugin {
   }
 }
 
-module.exports = PaletteWebpackPlugin;
+module.exports = WordPressPaletteWebpackPlugin;

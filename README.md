@@ -6,19 +6,19 @@
 
 <p align="center">
   <a href="LICENSE.md">
-    <img alt="MIT License" src="https://img.shields.io/github/license/roots/palette-webpack-plugin?color=%23525ddc&style=flat-square" />
+    <img alt="MIT License" src="https://img.shields.io/github/license/roots/wordpress-palette-webpack-plugin?color=%23525ddc&style=flat-square" />
   </a>
 
-  <a href="https://www.npmjs.com/package/palette-webpack-plugin">
-    <img alt="Version" src="https://img.shields.io/npm/v/palette-webpack-plugin?style=flat-square" />
+  <a href="https://www.npmjs.com/package/wordpress-palette-webpack-plugin">
+    <img alt="Version" src="https://img.shields.io/npm/v/wordpress-palette-webpack-plugin?style=flat-square" />
   </a>
 
-  <a href="https://www.npmjs.com/package/palette-webpack-plugin">
-    <img alt="Total Downloads" src="https://img.shields.io/npm/dt/palette-webpack-plugin?style=flat-square" />
+  <a href="https://www.npmjs.com/package/wordpress-palette-webpack-plugin">
+    <img alt="Total Downloads" src="https://img.shields.io/npm/dt/wordpress-palette-webpack-plugin?style=flat-square" />
   </a>
 
-   <a href="https://github.com/roots/palette-webpack-plugin/actions">
-    <img alt="Build Status" src="https://img.shields.io/github/workflow/status/roots/palette-webpack-plugin/Main?style=flat-square" />
+   <a href="https://github.com/roots/wordpress-palette-webpack-plugin/actions">
+    <img alt="Build Status" src="https://img.shields.io/github/workflow/status/roots/wordpress-palette-webpack-plugin/Main?style=flat-square" />
   </a>
 
   <a href="https://twitter.com/rootswp">
@@ -64,10 +64,10 @@ While we hope someone may find this useful for other purposes, this plugin and i
 
 ## Getting Started
 
-To begin, you'll need to install `palette-webpack-plugin`:
+To begin, you'll need to install `wordpress-palette-webpack-plugin`:
 
 ```bash
-$ yarn add palette-webpack-plugin -D
+$ yarn add wordpress-palette-webpack-plugin -D
 ```
 
 Then add the plugin to your `webpack` config. Here is an example containing the default values:
@@ -75,7 +75,7 @@ Then add the plugin to your `webpack` config. Here is an example containing the 
 **webpack.config.js**
 
 ```js
-const PalettePlugin = require('palette-webpack-plugin');
+const PalettePlugin = require('wordpress-palette-webpack-plugin');
 
 module.exports = {
   plugins: [
@@ -105,7 +105,7 @@ If you are using [Laravel Mix](https://laravel-mix.com), you may use the Mix hel
 
 ```js
 const mix = require('laravel-mix');
-require('palette-webpack-plugin/src/mix');
+require('wordpress-palette-webpack-plugin/src/mix');
 
 mix.palette({ ... });
 ```
@@ -236,4 +236,4 @@ Keep track of development and community news.
 
 ## License
 
-Palette Webpack Plugin is provided under the [MIT License](https://github.com/roots/palette-webpack-plugin/blob/master/LICENSE.md).
+Palette Webpack Plugin is provided under the [MIT License](https://github.com/roots/wordpress-palette-webpack-plugin/blob/master/LICENSE.md).
