@@ -45,7 +45,6 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
     new WordPressPaletteWebpackPlugin({
-      output: 'palette.json',
       blacklist: ['transparent', 'inherit'],
       pretty: false,
       sass: {

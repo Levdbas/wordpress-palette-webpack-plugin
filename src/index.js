@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const { color: d3Color } = require('d3-color');
 const { hsv: d3Hsv } = require('d3-hsv');
+const { exit } = require('process');
 
 class WordPressPaletteWebpackPlugin {
   /**
@@ -14,15 +15,11 @@ class WordPressPaletteWebpackPlugin {
   constructor(options) {
     this.options = _.merge(
       {
-        output: 'palette.json',
+        output: 'theme.json',
+        output_prepend: '',
+        wp_theme_json: true,
         blacklist: ['transparent', 'inherit'],
-        priority: 'tailwind',
         pretty: false,
-        tailwind: {
-          config: './tailwind.config.js',
-          shades: false,
-          path: 'colors',
-        },
         sass: {
           path: 'resources/assets/styles/config',
           files: ['variables.scss'],
@@ -32,9 +29,28 @@ class WordPressPaletteWebpackPlugin {
       options || {}
     );
 
-    this.palette = this.options.priority.includes('tailwind')
-      ? this.build(this.tailwind(), this.sass())
-      : this.build(this.sass(), this.tailwind());
+    this.palette = this.sass();
+  }
+
+  process_wp_theme_json(palette, theme_json_file) {
+    if (fs.existsSync(theme_json_file)) {
+      let rawdata = fs.readFileSync(theme_json_file);
+      var theme_json = JSON.parse(rawdata);
+    } else {
+      var theme_json = {
+        version: 1,
+        settings: {
+          color: {},
+        },
+      };
+    }
+
+    if ('undefined' == typeof theme_json.settings) theme_json.settings = {};
+    if ('undefined' == typeof theme_json.settings.color)
+      theme_json.settings.color = {};
+
+    theme_json.settings.color.palette = palette;
+    return theme_json;
   }
 
   /**
@@ -43,18 +59,34 @@ class WordPressPaletteWebpackPlugin {
    * @param {Object} compiler
    */
   apply(compiler) {
-    const palette = JSON.stringify(
-      this.palette,
-      null,
-      this.options.pretty ? 2 : null
-    );
+    if (this.options.wp_theme_json) {
+      const theme_json_file =
+        this.options.output == 'theme.json'
+          ? './theme.json'
+          : this.options.output;
+      // Build the theme.json format. Force pretty printing if we're using wp_theme_json.
+
+      var palette = JSON.stringify(
+        this.process_wp_theme_json(this.palette, theme_json_file),
+        null,
+        2
+      );
+    } else {
+      var palette = JSON.stringify(
+        this.palette,
+        null,
+        this.options.pretty ? 2 : null
+      );
+    }
+
+    let output_path = this.options.output_prepend + this.options.output;
 
     if (compiler.hooks) {
       compiler.hooks.emit.tapAsync(
         this.constructor.name,
         (compilation, callback) => {
           Object.assign(compilation.assets, {
-            [this.options.output]: {
+            [output_path]: {
               source() {
                 return palette;
               },
@@ -148,62 +180,6 @@ class WordPressPaletteWebpackPlugin {
   }
 
   /**
-   * Fetch and parse Tailwind theme colors if they are available.
-   */
-  tailwind() {
-    if (!this.options.tailwind || !this.exists(this.options.tailwind.config)) {
-      return [];
-    }
-
-    const config = require('tailwindcss/resolveConfig')(
-      require(path.resolve(this.options.tailwind.config))
-    );
-
-    this.tailwind = _.get(
-      config,
-      `theme.${this.options.tailwind.path || 'colors'}`,
-      {}
-    );
-
-    return Object.keys(this.tailwind)
-      .flatMap((key) => {
-        if (!key || this.options.blacklist.includes(key)) {
-          return;
-        }
-
-        if (_.isString(this.tailwind[key])) {
-          return this.transform(key);
-        }
-
-        if (
-          !this.options.tailwind.shades &&
-          this.tailwind[key].hasOwnProperty('500')
-        ) {
-          return this.transform(key, '500');
-        }
-
-        if (_.isArray(this.options.tailwind.shades)) {
-          return Object.keys(this.tailwind[key])
-            .filter((value) => this.options.tailwind.shades.includes(value))
-            .map((value) => this.transform(key, value));
-        }
-
-        if (_.isObject(this.options.tailwind.shades)) {
-          return Object.keys(this.tailwind[key])
-            .filter((value) =>
-              Object.keys(this.options.tailwind.shades).includes(value)
-            )
-            .map((value) => this.transform(key, value));
-        }
-
-        return Object.keys(this.tailwind[key]).map((value) =>
-          this.transform(key, value)
-        );
-      })
-      .filter((value) => !!value);
-  }
-
-  /**
    * Transform a color key and value into a more descriptive object.
    *
    * @param {String}  key
@@ -218,24 +194,6 @@ class WordPressPaletteWebpackPlugin {
         color: value,
       };
     }
-
-    if (!value) {
-      return {
-        name: this.title(key),
-        slug: key,
-        color: this.tailwind[key],
-      };
-    }
-
-    return {
-      name: isNaN(value)
-        ? this.title(value)
-        : this.options.tailwind.shades
-        ? this.title(key, value)
-        : this.title(key),
-      slug: `${key}-${value}`,
-      color: this.tailwind[key][value],
-    };
   }
 
   /**
@@ -246,14 +204,6 @@ class WordPressPaletteWebpackPlugin {
    */
   title(value, description) {
     value = _.startCase(_.camelCase(value));
-
-    if (
-      !_.isEmpty(description) &&
-      _.isObject(this.options.tailwind.shades) &&
-      _.has(this.options.tailwind.shades, description)
-    ) {
-      return _.trim(`${this.options.tailwind.shades[description]} ${value}`);
-    }
 
     return (
       value + (!_.isEmpty(description) ? ` (${this.title(description)})` : '')
