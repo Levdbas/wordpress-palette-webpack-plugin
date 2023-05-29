@@ -1,6 +1,6 @@
 {
   "name": "wordpress-palette-webpack-plugin",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "description": "Generate a JSON file containing your color palette from existing Sass maps.",
   "author": "Erik van der Bas <erik@basedonline.nl>",
   "license": "MIT",
@@ -17,8 +17,7 @@
   "files": [
     "src"
   ],
-  "type": "module",
-  "exports": "./src/index.js",
+  "main": "src/index.js",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -26,24 +25,24 @@
     "test": "webpack --config tests/webpack.config.js"
   },
   "dependencies": {
-    "d3-color": "^3.1",
+    "d3-color": "^2.0",
     "d3-hsv": "^0.1.0",
     "lodash": "^4.17.21",
-    "sass-export": "^2.1.2"
+    "sass-export": "^2.1.0"
   },
   "peerDependencies": {
-    "webpack": "^5.74.0"
+    "webpack": "^5.70.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
-    "babel-loader": "^9.1.2",
-    "css-loader": "^6.7.4",
-    "eslint": "^8.41.0",
-    "mini-css-extract-plugin": "^2.7.6",
-    "postcss-loader": "^7.3",
-    "sass": "^1.62.1",
-    "sass-loader": "^13.3",
-    "webpack": "^5.83.1",
-    "webpack-cli": "^5.1.1"
+    "@babel/core": "^7.17.5",
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.7.0",
+    "eslint": "^8.10.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "postcss-loader": "^6.2.1",
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
   }
 }

@@ -1,7 +1,8 @@
-import path from 'path';
-import fs from 'fs';
-import _ from 'lodash';
-import color as d3Color from 'd3-color';
+const path = require('path');
+const fs = require('fs');
+const _ = require('lodash');
+
+const { color: d3Color } = require('d3-color');
 const { hsv: d3Hsv } = require('d3-hsv');
 const { exit } = require('process');
 
