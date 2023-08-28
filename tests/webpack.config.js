@@ -46,6 +46,7 @@ module.exports = {
     }),
     new WordPressPaletteWebpackPlugin({
       blacklist: ['transparent', 'inherit'],
+      output: 'palette.json',
       pretty: false,
       sass: {
         path: path.resolve(__dirname, 'source'),

@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
 
-const { color: d3Color } = require('d3-color');
 const { hsv: d3Hsv } = require('d3-hsv');
 const { exit } = require('process');
 
@@ -38,7 +37,8 @@ class WordPressPaletteWebpackPlugin {
       var theme_json = JSON.parse(rawdata);
     } else {
       var theme_json = {
-        version: 1,
+        "$schema": "https://schemas.wp.org/trunk/theme.json",
+        version: 2,
         settings: {
           color: {},
         },
@@ -262,6 +262,13 @@ class WordPressPaletteWebpackPlugin {
      * falls below the curve.
      */
     return v < 1.3 / (1 + 8.5 * s);
+  }
+
+  async d3Color(color) {
+    await import('d3-color').then(({ color: d3Color }) => {
+      var color = d3Color(color);
+      return color;
+    });
   }
 }
 
