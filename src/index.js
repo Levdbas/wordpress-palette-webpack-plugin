@@ -63,7 +63,7 @@ class WordPressPaletteWebpackPlugin {
       const theme_json_file =
         this.options.output == 'theme.json'
           ? './theme.json'
-          : this.options.output;
+          : './' + this.options.output;
       // Build the theme.json format. Force pretty printing if we're using wp_theme_json.
 
       var palette = JSON.stringify(

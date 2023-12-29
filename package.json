@@ -4,7 +4,7 @@
   "description": "Generate a JSON file containing your color palette from existing Sass maps.",
   "author": "Erik van der Bas <erik@basedonline.nl>",
   "license": "MIT",
-  "repository": "roots/Levdbas-palette-webpack-plugin",
+  "repository": "Levdbas/Levdbas-palette-webpack-plugin",
   "homepage": "https://github.com/Levdbas/wordpress-palette-webpack-plugin",
   "bugs": "https://github.com/Levdbas/wordpress-palette-webpack-plugin/issues",
   "keywords": [
