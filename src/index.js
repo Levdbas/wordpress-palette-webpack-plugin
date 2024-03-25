@@ -2,9 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
 
-const { hsv: d3Hsv } = require('d3-hsv');
-const { exit } = require('process');
-
 class WordPressPaletteWebpackPlugin {
   /**
    * Register the component.
@@ -82,11 +79,11 @@ class WordPressPaletteWebpackPlugin {
     let output_path = this.options.output_prepend + this.options.output;
 
     if (compiler.hooks) {
-      compiler.hooks.emit.tapAsync(
+      compiler.hooks.thisCompilation.tap(
         this.constructor.name,
-        (compilation, callback) => {
+        (compilation) => {
           Object.assign(compilation.assets, {
-            [output_path]: {
+            [this.options.output]: {
               source() {
                 return palette;
               },
@@ -95,11 +92,9 @@ class WordPressPaletteWebpackPlugin {
               },
             },
           });
-
-          callback();
-        }
-      );
+        });
     }
+
   }
 
   /**
@@ -246,7 +241,18 @@ class WordPressPaletteWebpackPlugin {
    * @param {String} color
    */
   maybeGrayscale(color) {
-    const { h, s, v } = d3Hsv(color);
+    // async run https://github.com/pex-gl/pex-color/
+
+    async function pexColor(color) {
+      await import('pex-color').then(({ hsv }) => {
+        var color = hsv(color);
+        return color;
+      });
+    }
+
+
+
+    const { h, s, v } = pexColor(color);
 
     /**
      * HSV is a cylinder where the central vertical axis comprises
