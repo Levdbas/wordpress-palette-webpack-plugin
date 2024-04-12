@@ -83,7 +83,7 @@ class WordPressPaletteWebpackPlugin {
         this.constructor.name,
         (compilation) => {
           Object.assign(compilation.assets, {
-            [this.options.output]: {
+            [output_path]: {
               source() {
                 return palette;
               },
@@ -94,7 +94,6 @@ class WordPressPaletteWebpackPlugin {
           });
         });
     }
-
   }
 
   /**
