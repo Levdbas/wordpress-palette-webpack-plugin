@@ -35,7 +35,7 @@ class WordPressPaletteWebpackPlugin {
     } else {
       var theme_json = {
         "$schema": "https://schemas.wp.org/trunk/theme.json",
-        version: 2,
+        version: 3,
         settings: {
           color: {},
         },
