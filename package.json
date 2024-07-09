@@ -1,6 +1,6 @@
 {
   "name": "wordpress-palette-webpack-plugin",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Generate a JSON file containing your color palette from existing Sass maps.",
   "author": "Erik van der Bas <erik@basedonline.nl>",
   "license": "MIT",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "pex-color": "^2.1.0",
+    "pex-color": "2.1.0",
     "sass-export": "^2.1.2"
   },
   "peerDependencies": {
