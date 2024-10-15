@@ -25,6 +25,8 @@
     "test": "webpack --config tests/webpack.config.js"
   },
   "dependencies": {
+    "get-sass-vars": "^4.0.2",
+    "install": "^0.13.0",
     "lodash": "^4.17.21",
     "pex-color": "^2.1.0",
     "sass-export": "^2.1.2"

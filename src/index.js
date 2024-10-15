@@ -1,6 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
+var fsp = require('fs/promises');
+const sassVars = require('get-sass-vars');
 
 class WordPressPaletteWebpackPlugin {
   /**
@@ -19,16 +21,21 @@ class WordPressPaletteWebpackPlugin {
         sass: {
           path: 'resources/assets/styles/config',
           files: ['variables.scss'],
-          variables: ['colors'],
+          variable: '$colors',
         },
       },
       options || {}
     );
 
-    this.palette = this.sass();
+    this.sass().then((colors) => {
+      this.palette = colors;
+
+      console.log(this.palette);
+    });
   }
 
   process_wp_theme_json(palette, theme_json_file) {
+    console.log(palette);
     if (fs.existsSync(theme_json_file)) {
       let rawdata = fs.readFileSync(theme_json_file);
       var theme_json = JSON.parse(rawdata);
@@ -56,44 +63,43 @@ class WordPressPaletteWebpackPlugin {
    * @param {Object} compiler
    */
   apply(compiler) {
-    if (this.options.wp_theme_json) {
-      const theme_json_file =
-        this.options.output == 'theme.json'
-          ? './theme.json'
-          : './' + this.options.output;
-      // Build the theme.json format. Force pretty printing if we're using wp_theme_json.
+    const theme_json_file =
+      this.options.output == 'theme.json'
+        ? './theme.json'
+        : './' + this.options.output;
+    // Build the theme.json format. Force pretty printing if we're using wp_theme_json.
 
+    // wait 50ms 
+    setTimeout(() => {
       var palette = JSON.stringify(
         this.process_wp_theme_json(this.palette, theme_json_file),
         null,
         2
       );
-    } else {
-      var palette = JSON.stringify(
-        this.palette,
-        null,
-        this.options.pretty ? 2 : null
-      );
-    }
 
-    let output_path = this.options.output_prepend + this.options.output;
 
-    if (compiler.hooks) {
-      compiler.hooks.thisCompilation.tap(
-        this.constructor.name,
-        (compilation) => {
-          Object.assign(compilation.assets, {
-            [output_path]: {
-              source() {
-                return palette;
+      let output_path = this.options.output_prepend + this.options.output;
+
+      if (compiler.hooks) {
+        compiler.hooks.thisCompilation.tap(
+          this.constructor.name,
+          (compilation) => {
+            Object.assign(compilation.assets, {
+              [output_path]: {
+                source() {
+                  return palette;
+                },
+                size() {
+                  return palette.length;
+                },
               },
-              size() {
-                return palette.length;
-              },
-            },
+            });
           });
-        });
-    }
+      }
+    }, 200);
+
+
+
   }
 
   /**
@@ -149,28 +155,14 @@ class WordPressPaletteWebpackPlugin {
       return;
     }
 
-    const variables = require('sass-export')
-      .exporter({ inputFiles: files })
-      .getArray();
+    // run the async function and wait for the result before returning
+    return this.getSassJson(files).then((json) => {
 
-    if (!variables.length) {
-      return;
-    }
+      const colors = json[this.options.sass.variable];
 
-    return variables
-      .filter(
-        (key) =>
-          [this.options.sass.variables].some(
-            (value) =>
-              key.name ===
-              (_.startsWith(value, '$') ? value : ['$', value].join(''))
-          ) && key.mapValue
-      )
-      .flatMap((colors) =>
-        colors.mapValue.map((color) =>
-          this.transform(color.name, color.compiledValue, true)
-        )
-      );
+      return colors;
+    });
+
   }
 
   /**
@@ -274,6 +266,12 @@ class WordPressPaletteWebpackPlugin {
       var color = d3Color(color);
       return color;
     });
+  }
+
+  async getSassJson(files) {
+    const css = await fsp.readFile(files[0], 'utf-8');
+    const json = await sassVars(css);
+    return json;
   }
 }
 
