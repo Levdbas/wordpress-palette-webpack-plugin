@@ -50,8 +50,8 @@ module.exports = {
       pretty: false,
       sass: {
         path: path.resolve(__dirname, 'source'),
-        files: ['app.scss'],
-        variables: ['colors'],
+        file: 'app.scss',
+        variable: '$colors',
       },
     }),
   ],

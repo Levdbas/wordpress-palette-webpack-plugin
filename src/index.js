@@ -20,7 +20,7 @@ class WordPressPaletteWebpackPlugin {
         pretty: false,
         sass: {
           path: 'resources/assets/styles/config',
-          files: ['variables.scss'],
+          file: 'variables.scss',
           variable: '$colors',
         },
       },
@@ -126,7 +126,7 @@ class WordPressPaletteWebpackPlugin {
    * Fetch and parse Sass theme colors if they are available.
    */
   sass() {
-    if (!this.options.sass || !this.options.sass.files) {
+    if (!this.options.sass || !this.options.sass.file) {
       return;
     }
 
@@ -136,20 +136,22 @@ class WordPressPaletteWebpackPlugin {
         : [this.options.sass.path, '/'].join('')
       : null;
 
-    const files = [this.options.sass.files].map((file) => {
-      if (this.exists([paths, file].join(''))) {
-        return [paths, file].join('');
-      }
-    });
+    let file = null;
+    if (this.exists([paths, this.options.sass.file].join(''))) {
 
-    if (!files) {
+      file = [paths, this.options.sass.file].join('');
+    }
+
+    console.log(file);
+
+    if (!file) {
       return;
     }
 
     // run the async function and wait for the result before returning
 
 
-    const css = fs.readFileSync(files[0]);
+    const css = fs.readFileSync(file);
     var colors = sassVars.sync(css);
 
     colors = colors[this.options.sass.variable];
