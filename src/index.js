@@ -160,7 +160,13 @@ class WordPressPaletteWebpackPlugin {
 
       const colors = json[this.options.sass.variable];
 
-      return colors;
+      if (!colors) {
+        return;
+      }
+
+      return Object.keys(colors).map((key) => {
+        return this.transform(key, colors[key]);
+      });
     });
 
   }
@@ -172,14 +178,13 @@ class WordPressPaletteWebpackPlugin {
    * @param {String}  value
    * @param {Boolean} isSass
    */
-  transform(key, value, isSass = false) {
-    if (isSass) {
-      return {
-        name: this.title(key),
-        slug: key,
-        color: value,
-      };
-    }
+  transform(key, value) {
+    return {
+      name: this.title(key),
+      slug: key,
+      color: value,
+    };
+
   }
 
   /**
