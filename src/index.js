@@ -3,7 +3,7 @@ const fs = require('fs');
 const _ = require('lodash');
 var fsp = require('fs/promises');
 const sassVars = require('get-sass-vars');
-
+const sass = require('sass');
 class WordPressPaletteWebpackPlugin {
   /**
    * Register the component.
@@ -142,8 +142,6 @@ class WordPressPaletteWebpackPlugin {
       file = [paths, this.options.sass.file].join('');
     }
 
-    console.log(file);
-
     if (!file) {
       return;
     }
@@ -152,7 +150,14 @@ class WordPressPaletteWebpackPlugin {
 
 
     const css = fs.readFileSync(file);
-    var colors = sassVars.sync(css);
+    var colors = sassVars.sync(css,
+      {
+        sassOptions: {
+          quietDeps: true,
+          logger: sass.Logger.silent,
+        },
+      }
+    );
 
     colors = colors[this.options.sass.variable];
 

@@ -1,6 +1,6 @@
 {
   "name": "wordpress-palette-webpack-plugin",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Generate a JSON file containing your color palette from existing Sass maps.",
   "author": "Erik van der Bas <erik@basedonline.nl>",
   "license": "MIT",
