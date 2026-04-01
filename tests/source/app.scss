@@ -1,3 +1,5 @@
+@use "sass:map";
+
 $white: #ffffff !default;
 $black: #000000 !default;
 $yellow: #f7d600 !default;
@@ -17,5 +19,5 @@ $colors: (
 ) !default;
 
 h1{
- color: map-get($colors, "white");
+ color: map.get($colors, "white");
 }
