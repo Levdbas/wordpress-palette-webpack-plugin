@@ -25,24 +25,24 @@
     "test": "webpack --config tests/webpack.config.js"
   },
   "dependencies": {
-    "get-sass-vars": "^4.0.2",
+    "get-sass-vars": "^4.0.3",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
-    "pex-color": "2.1.0"
+    "pex-color": "2.3.0"
   },
   "peerDependencies": {
     "webpack": "^5.70.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25",
-    "babel-loader": "^9.2.1",
+    "@babel/core": "^7.29",
+    "babel-loader": "^10.1.1",
     "css-loader": "^7.1",
-    "eslint": "^9.12",
-    "mini-css-extract-plugin": "^2.9.1",
-    "postcss-loader": "^8.1.1",
-    "sass": "1.77",
-    "sass-loader": "^14.2",
-    "webpack": "^5.95.0",
-    "webpack-cli": "^5.1.4"
+    "eslint": "^10.1",
+    "mini-css-extract-plugin": "^2.10.2",
+    "postcss-loader": "^8.2.1",
+    "sass": "1.98",
+    "sass-loader": "^16.0",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2"
   }
 }
